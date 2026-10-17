@@ -4,6 +4,22 @@ A resume and cover letter editor with resume and job-description inputs, text im
 
 **Generate resume & cover letter** creates both drafts for the pasted job description. The cover letter uses only supported experience, stays editable, and has a dedicated **Copy cover letter** button. If clipboard access is blocked, the letter is selected for manual copying. Cover letters stay in the current tab with the resume and are cleared by **Clear all** or a page refresh. Resume PDF and text exports contain only the resume.
 
+## Deploy from GitHub to Render
+
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/hermoginohans/roleready)
+
+1. Open the deployment link, sign in to Render, and connect your GitHub account. Grant Render access to `hermoginohans/roleready` if requested.
+2. Render reads `render.yaml` and creates a Node web service. Enter your OpenAI API key in the prompted `OPENAI_API_KEY` secret field, then deploy. Do not put the key in GitHub source files.
+3. Open the HTTPS URL Render provides. Look for **AI connection ready**, then load the sample inputs and generate a resume and cover letter to verify the live AI connection.
+
+Render deploys updates from the linked branch. GitHub Actions runs the tests, build, and artifact validation on pushes to `main` and pull requests. The workflow does not need an API key; its AI tests use mocks. The initial health check confirms the server responds, not that the API key has credits or is valid.
+
+The Blueprint selects Render's free instance. See [Render's free service limitations](https://render.com/docs/free), including idle spin-down. AI API usage is billed separately by your provider. The app's AI endpoint is available to visitors of the deployed URL.
+
+For manual Render setup, select **New → Web Service**, connect the repository, use Node 24, set build command `npm run build && npm run validate`, start command `npm start`, health check path `/api/status`, and add `OPENAI_API_KEY` as a secret. `OPENAI_MODEL` is optional. The server binds to Render's assigned `PORT` on `0.0.0.0` and supports Render's HTTPS proxy. `PUBLIC_URL` can optionally fix the expected public origin (for example, `https://your-app.onrender.com`).
+
+GitHub Pages alone cannot run the AI backend. GitHub stores the source and Render runs the website and server-side AI calls.
+
 ## Run locally
 
 Requires Node.js 24. No installation is needed; document readers are bundled in `vendor/`.
