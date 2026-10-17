@@ -3,3 +3,6 @@ site.tar.gz
 .env
 .env.*
 !.env.example
+.preview/
+node_modules/
+*.log

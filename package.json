@@ -1,11 +1,11 @@
 {
-  "name": "resume-studio",
+  "name": "roleready",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "test": "node --test --test-isolation=none tests/worker.test.mjs",
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
     "validate": "node scripts/validate-artifact.mjs"
   }
 }
