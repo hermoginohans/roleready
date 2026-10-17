@@ -25,10 +25,11 @@ export default {async fetch(request,env={}){
   const asset=(env.ASSETS||bundledAssets)[url.pathname];
   return asset===undefined?new Response('Not found',{status:404}):new Response(asset,{headers:{'Content-Type':url.pathname.endsWith('.json')?'application/json':'text/javascript; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
  }
- if(url.pathname==='/api/status')return json({ready:!!env.OPENAI_API_KEY});
+ if(url.pathname==='/api/status')return json({ready:!!env.OPENAI_API_KEY&&env.AI_ENABLED!=='false'});
  if(url.pathname==='/api/tailor'){
   if(request.method!=='POST')return json({error:'Use POST.'},405);
   if(request.headers.get('origin')&&request.headers.get('origin')!==url.origin)return json({error:'Origin is not allowed.'},403);
+  if(env.AI_ENABLED==='false')return json({error:'AI generation is not enabled on this public test site yet. You can import, edit, and download your resume, or copy the prompt to use in ChatGPT.'},503);
   if(!env.OPENAI_API_KEY)return json({error:'AI rewriting is not connected yet. Enable OpenAI Developers in ChatGPT so the Site connection can be configured. You can still edit, export, or copy a tailoring prompt to ChatGPT.'},503);
   try{
    if(Number(request.headers.get('content-length'))>160000)return json({error:'Input is too long.'},413);
